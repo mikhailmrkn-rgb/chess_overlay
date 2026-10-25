@@ -1,0 +1,19 @@
+# build output
+build/
+dist/
+*.exe
+*.spec
+
+# things the app writes next to chess_overlay.py when run from source
+config.json
+pieces_*.npz
+chess_overlay.log
+experiment_log.csv
+stockfish/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
