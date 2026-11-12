@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Лист фонов</title>
+<style>html,body{margin:0;background:#16100d}svg{display:block}</style></head>
+<body><div id="root"></div>
+<script src="world.js"></script>
+<script>
+const { BG, W, H } = AZ;
+const FONT = 'Inter Display, Inter, sans-serif';
+const T = (x, y, txt, size, col, w, anchor) => `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}" font-weight="${w || 700}" fill="${col || '#e9d6b8'}" text-anchor="${anchor || 'middle'}">${txt}</text>`;
+const items = [
+  ['wellTop', '1. Сухой колодец (сверху)', 'крючок, 0:00'],
+  ['street', '2. Улица, кондиционеры', '+44°, 0:05'],
+  ['farm', '3. Ферма, загон', 'коровы, 0:18'],
+  ['yard', '4. Двор Захара', 'колодец на цепи, 0:23'],
+  ['field', '5. Поле и водокачка', 'Лида уходит, 0:31'],
+  ['fire', '6. Пожар', '0:38'],
+  ['smoke', '7. Дым, финал', 'Лида возвращается, 0:52'],
+  ['mapClose', '8. Карта колодцев', 'обрыв серии, 0:56'],
+];
+const tw = 420, th = Math.round(tw * H / W), gap = 30, topY = 170;
+let s = `<rect width="1830" height="${topY + 2 * (th + 110) + 20}" fill="#16100d"/>`;
+s += T(40, 82, 'АНОМАЛЬНАЯ ЖАРА', 64, '#ff8a3a', 900, 'start');
+s += T(42, 130, 'серия 1 «Засуха» · фоны 9:16 · день жары → закат → огонь → дым', 28, '#a58e72', 500, 'start');
+items.forEach(([k, a, b], i) => {
+  const x = gap + (i % 4) * (tw + gap), y = topY + Math.floor(i / 4) * (th + 110);
+  s += `<svg x="${x}" y="${y}" width="${tw}" height="${th}" viewBox="0 0 ${W} ${H}" overflow="hidden">${BG[k]()}</svg>`;
+  s += `<rect x="${x}" y="${y}" width="${tw}" height="${th}" fill="none" stroke="#3a2a1d" stroke-width="3"/>`;
+  s += T(x + 6, y + th + 40, a, 27, '#f2e2c6', 800, 'start') + T(x + 6, y + th + 76, b, 23, '#b49a7c', 500, 'start');
+});
+const totalH = topY + 2 * (th + 110) + 20;
+document.getElementById('root').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="915" height="${totalH / 2}" viewBox="0 0 1830 ${totalH}">${s}</svg>`;
+</script></body></html>

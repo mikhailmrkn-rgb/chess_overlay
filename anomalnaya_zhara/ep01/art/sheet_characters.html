@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Лист персонажей</title>
+<style>html,body{margin:0;background:#16100d}svg{display:block}</style></head>
+<body><div id="root"></div>
+<script src="world.js"></script>
+<script>
+const { P, human, head, VIKA, LIDA, ZAKHAR, bottle, bandage, bucket, chainLock, pitchfork, airCon, thermometer, wellMap, cow, sunEye, fireWall } = AZ;
+const FONT = 'Inter Display, Inter, sans-serif';
+const T = (x, y, txt, size, col, w, anchor) => `<text x="${x}" y="${y}" font-family="${FONT}" font-size="${size}" font-weight="${w || 700}" fill="${col || '#e9d6b8'}" text-anchor="${anchor || 'middle'}">${txt}</text>`;
+const at = (x, y, s, inner) => `<g transform="translate(${x} ${y}) scale(${s})">${inner}</g>`;
+const card = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="#21180f" stroke="#3a2a1d" stroke-width="2"/>`;
+const tremble = (x, y) => `<g stroke="#f0c890" stroke-width="3" fill="none" opacity="0.8" stroke-linecap="round"><path d="M${x - 30} ${y - 16} q -8 16 0 32"/><path d="M${x - 42} ${y - 22} q -10 22 0 44"/><path d="M${x + 30} ${y - 16} q 8 16 0 32"/><path d="M${x + 42} ${y - 22} q 10 22 0 44"/></g>`;
+
+let s = '';
+s += `<rect width="1800" height="2700" fill="#16100d"/>`;
+s += T(60, 92, 'АНОМАЛЬНАЯ ЖАРА', 64, '#ff8a3a', 900, 'start');
+s += T(62, 140, 'серия 1 «Засуха» · лист персонажей · стиль: плоский 2D, свет слева от солнца, тень справа', 28, '#a58e72', 500, 'start');
+
+// ---- Ряд 1: главные герои ----
+s += card(40, 180, 560, 1020) + card(620, 180, 560, 1020) + card(1200, 180, 560, 1020);
+
+// Вика — рука в кармане с бутылкой, вторая дрожит
+const pocket = `<g transform="translate(48 -226) rotate(8)">${bottle(0.25, 0.5)}</g><rect x="16" y="-246" width="48" height="30" rx="6" fill="#3e3a2d"/><rect x="16" y="-246" width="48" height="6" fill="#2a281f"/>`;
+s += at(320, 1000, 1.25, human(VIKA, { armL: [10, -4], armR: [3, 2], face: 'sick', look: [-3, 2], sweat: true, front: pocket }));
+s += tremble(320 - 58 * 1.25 - 10, 1000 - 228 * 1.25);
+s += T(320, 1070, 'ВИКА, 27', 42, '#f2e2c6', 900);
+s += T(320, 1112, 'ветеринар · скрывает болезнь', 26, '#b49a7c', 500);
+s += T(320, 1146, 'дрожат руки · бутылка в кармане', 26, '#b49a7c', 500);
+
+// Лида — пересчитывает бинты
+s += at(900, 1000, 1.25, human(LIDA, { armL: [0, -74], armR: [0, 70], face: 'whisper', look: [0, 6], handL: `<g transform="rotate(74) translate(-6 -4)">${bandage(0.9)}</g>` }));
+s += T(735, 300, '41…', 36, '#e9d6b8', 800) + T(1070, 270, '42…', 36, '#e9d6b8', 800);
+s += T(900, 1070, 'ЛИДА', 42, '#f2e2c6', 900);
+s += T(900, 1112, 'соседка, медсестра', 26, '#b49a7c', 500);
+s += T(900, 1146, 'вечно пересчитывает бинты', 26, '#b49a7c', 500);
+
+// Захар — с вилами у колодца
+s += at(1480, 1000, 1.18, human(ZAKHAR, { armL: [6, -4], armR: [-24, -48], face: 'grim', look: [-5, 0], handR: `<g transform="rotate(72) translate(0 110)">${pitchfork(0.8)}</g>` }));
+s += T(1480, 1070, 'ЗАХАР', 42, '#f2e2c6', 900);
+s += T(1480, 1112, 'сосед, стережёт колодец', 26, '#b49a7c', 500);
+s += T(1480, 1146, 'губы в трещинах — сам не пьёт', 26, '#b49a7c', 500);
+
+// ---- Ряд 2: эмоции и крупные планы ----
+s += card(40, 1230, 1720, 520);
+s += T(70, 1285, 'ЭМОЦИИ ВИКИ', 30, '#ff8a3a', 900, 'start');
+const vikaHead = (face, extra) => head(Object.assign({ rx: VIKA.rx, ry: VIKA.ry, skin: VIKA.skin, skinD: VIKA.skinD, face, hairBack: VIKA.hairBack, hairFront: VIKA.hairFront, lip: VIKA.lip }, extra || {}));
+[['sick', 'тревога/болезнь'], ['shock', 'шок'], ['whisper', 'шёпот'], ['hope', 'надежда']].forEach(([fc, lbl], i) => {
+  const x = 170 + i * 250;
+  s += at(x, 1470, 1.5, vikaHead(fc, { sweat: fc === 'sick' }));
+  s += T(x, 1650, lbl, 26, '#b49a7c', 600);
+});
+s += T(1110, 1285, 'КРУПНО: ЗАХАР', 30, '#ff8a3a', 900, 'start');
+s += at(1250, 1490, 2.1, head({ rx: ZAKHAR.rx, ry: ZAKHAR.ry, skin: ZAKHAR.skin, skinD: ZAKHAR.skinD, face: 'grim', hairBack: ZAKHAR.hairBack, hairFront: ZAKHAR.hairFront, cheeks: true, brow: ZAKHAR.browCol, browW: 6 }));
+s += T(1250, 1700, 'треснувшие губы — намёк', 24, '#b49a7c', 600);
+s += T(1560, 1285, 'ЛИДА В ФИНАЛЕ', 30, '#ff8a3a', 900);
+const mask = `<path d="M-60 18 Q0 8 60 18 L58 52 Q0 44 -58 52 Z" fill="#e6e0d2"/><path d="M-58 40 Q0 32 58 40" stroke="#7a7266" stroke-width="3" fill="none"/><path d="M-30 -10 q 20 8 40 -4" stroke="#3a302c" stroke-width="10" opacity="0.5"/>`;
+s += at(1560, 1700, 0.62, human(LIDA, { armL: [-30, -100], armR: [4, 0], face: 'hope', headOver: mask,
+  handL: `<g transform="rotate(130)"><rect x="-16" y="-70" width="32" height="120" rx="14" fill="${P.paper}"/><rect x="-16" y="-70" width="32" height="14" rx="7" fill="${P.paperD}"/></g>`,
+  handR: `<g transform="translate(0 120)">${bucket('clean', 0.75)}</g>` }));
+
+// ---- Ряд 3: животные и угрозы ----
+s += card(40, 1780, 860, 440) + card(920, 1780, 840, 440);
+s += T(70, 1835, 'КОРОВЫ', 30, '#ff8a3a', 900, 'start');
+s += at(250, 2130, 0.62, cow('stand'));
+s += at(690, 2130, 0.62, cow('down'));
+s += T(250, 2190, 'стоит', 24, '#b49a7c', 600) + T(690, 2190, 'упала, дрожит', 24, '#b49a7c', 600);
+s += T(950, 1835, 'УГРОЗЫ СЕРИИ (вместо монстров)', 30, '#ff8a3a', 900, 'start');
+s += `<svg x="950" y="1860" width="260" height="300" viewBox="-200 -200 400 400" overflow="hidden"><rect x="-200" y="-200" width="400" height="400" fill="#7b3417"/>${sunEye(70)}</svg>`;
+s += T(1080, 2195, 'солнце-«глаз»', 24, '#b49a7c', 600);
+s += `<svg x="1230" y="1860" width="260" height="300" viewBox="0 -340 260 340" overflow="hidden"><rect y="-340" width="260" height="340" fill="#1a0f0b"/>${fireWall(260, 220, 5)}</svg>`;
+s += T(1360, 2195, 'огонь', 24, '#b49a7c', 600);
+s += at(1620, 2120, 1.3, bucket('poison'));
+s += T(1620, 2195, 'вода с ядом', 24, '#b49a7c', 600);
+
+// ---- Ряд 4: реквизит ----
+s += card(40, 2250, 1720, 410);
+s += T(70, 2305, 'РЕКВИЗИТ', 30, '#ff8a3a', 900, 'start');
+s += at(140, 2560, 1.3, bottle(0.25)) + T(140, 2620, 'последняя', 22, '#b49a7c', 600) + T(140, 2645, 'бутылка', 22, '#b49a7c', 600);
+s += at(300, 2490, 1.6, bandage()) + T(300, 2620, 'бинт', 22, '#b49a7c', 600);
+s += at(480, 2470, 0.85, chainLock()) + T(530, 2620, 'цепь и замок', 22, '#b49a7c', 600);
+s += at(780, 2570, 1.05, bucket('clean')) + T(780, 2620, 'чистая вода', 22, '#b49a7c', 600);
+s += at(1010, 2460, 0.42, wellMap()) + T(1010, 2620, 'карта колодцев', 22, '#b49a7c', 600);
+s += at(1260, 2470, 0.95, airCon()) + T(1260, 2620, 'кондиционер', 22, '#b49a7c', 600);
+s += at(1440, 2530, 0.7, thermometer()) + T(1440, 2620, 'градусник', 22, '#b49a7c', 600);
+// палитра
+const pal = [P.skyTop, P.skyMid, P.skyLow, P.dust, P.straw, P.soil, P.smoke, P.fire, P.fireL, P.poison, P.red, P.water];
+pal.forEach((c, i) => { s += `<rect x="${1560 + (i % 3) * 58}" y="${2340 + Math.floor(i / 3) * 58}" width="50" height="50" rx="8" fill="${c}"/>`; });
+s += T(1647, 2620, 'палитра', 22, '#b49a7c', 600);
+
+document.getElementById('root').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1350" viewBox="0 0 1800 2700">${s}</svg>`;
+</script></body></html>
