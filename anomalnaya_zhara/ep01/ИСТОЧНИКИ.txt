@@ -1,0 +1,46 @@
+АНОМАЛЬНАЯ ЖАРА — серия 1 «Засуха»
+ИСТОЧНИКИ ЗВУКА, ГОЛОСА И ГРАФИКИ
+
+Чужой музыки в ролике нет.
+
+1. МУЗЫКАЛЬНЫЙ ФОН (мрачный гул)
+   Собственный синтез, без сэмплов и без чужой музыки.
+   Сделан кодом в sound/mix.py: низкие синусоиды на нотах D1, D2, A2, D3, Eb3, медленное «дыхание»
+   громкости, приглушённый шум «горячего воздуха», гул кондиционеров (50 Гц + гармоники + шум вентилятора).
+   Лицензия: CC0 1.0 (общественное достояние), https://creativecommons.org/publicdomain/zero/1.0/
+
+2. СИНТЕЗИРОВАННЫЕ ЭФФЕКТЫ (тоже sound/mix.py, лицензия CC0 1.0)
+   - глухой удар ведра о дно колодца
+   - падение коровы
+   - металлический удар по ведру
+   - низкий финальный удар
+
+3. ЗВУКОВЫЕ ЭФФЕКТЫ CC0 С OPENGAMEART.ORG
+   У каждой страницы проверено: в поле «License(s)» указано CC0. Дата проверки: 12.11.2026.
+   Копии использованных файлов лежат в sound/cc0/ (перекодированы в .ogg, содержимое не изменено).
+
+   Файл в проекте            Что звучит в ролике            Автор           Страница (лицензия CC0)
+   sand_footsteps.ogg        шаги Лиды по песку             Peludo          https://opengameart.org/content/water-splash-and-sand-footsteps
+   footsteps_grass_sand.ogg  шаги Вики к колодцу            qubodup         https://opengameart.org/content/fantozzis-footsteps-grasssand-stone
+   tree_creak.ogg            скрип колодезного ворота       AntumDeluge     https://opengameart.org/content/tree-creaking
+   chain_winch.ogg           звон цепи, цепь сорвана        bart            https://opengameart.org/content/chain-winch-sounds
+   wind_long.ogg             ветер над полем                Luke.RUSTLTD    https://opengameart.org/content/wind1
+   wind_gust.ogg             порыв, когда вспыхивает поле   IgnasD          https://opengameart.org/content/wind
+   fire_crackle.ogg          треск огня                     AntumDeluge     https://opengameart.org/content/fire-crackling
+   splash.ogg                всплеск ядовитой воды          rubberduck      https://opengameart.org/content/40-cc0-water-splash-slime-sfx
+   bubbles.ogg               бульканье/шипение яда          rubberduck      https://opengameart.org/content/40-cc0-water-splash-slime-sfx
+   heartbeat.ogg             удары сердца                   qubodup         https://opengameart.org/content/heartbeat-single-sound
+   paper_flip.ogg            шорох карты                    StarNinjas      https://opengameart.org/content/10-book-page-flips
+
+   Почему не Freesound: сетевая политика этой облачной среды блокирует freesound.org.
+   Поэтому звуки взяты с OpenGameArt, тоже только с лицензией CC0.
+
+4. ГОЛОС
+   ElevenLabs, модель eleven_v4, голос «Kate — Multilingual Storyteller» (voice_id R38XE2306Hb4iCupQ3X3).
+   Сгенерирован в аккаунте автора сериала. Права на использование определяются условиями ElevenLabs
+   для аккаунта автора (на бесплатном тарифе ElevenLabs может требовать указать себя в описании ролика,
+   проверьте свой тариф: https://elevenlabs.io/terms-of-use).
+   Тайминги слов: распознавание ElevenLabs (Scribe).
+
+5. ГРАФИКА, АНИМАЦИЯ, СУБТИТРЫ
+   Нарисованы кодом с нуля (art/world.js, anim/scenes.js). Шрифт субтитров: Inter (SIL Open Font License 1.1).
