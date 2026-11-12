@@ -3,4 +3,4 @@
 Голос: Kate — Multilingual Storyteller (voice_id R38XE2306Hb4iCupQ3X3)
 Текст: ../elevenlabs_tekst.txt
 Файл: voice_raw.mp3 — 59,25 с, моно 44,1 кГц, громкость -21,1 LUFS (исходник, без обработки)
-Речь: с 0,38 с по 58,83 с
+Речь: с 0,10 с по 58,83 с (после укорачивания пауз — voice_trim.wav, по ~58,1 с)

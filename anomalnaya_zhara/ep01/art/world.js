@@ -63,6 +63,10 @@
 
   function head(o) {
     const rx = o.rx, ry = o.ry, id = uid('hc');
+    if (o.back) {
+      return (o.hairBack || '') + `<ellipse cx="${-rx + 2}" cy="8" rx="9" ry="14" fill="${o.skinD}"/><ellipse cx="${rx - 2}" cy="8" rx="9" ry="14" fill="${o.skinD}"/>` +
+        `<ellipse rx="${rx + 4}" ry="${ry + 4}" cy="-2" fill="${o.hairCol || P.ink}"/>` + (o.backDeco || '');
+    }
     const e = Object.assign({}, FACE[o.face || 'neutral'], o.faceOver || {});
     const look = o.look || [0, 0];
     let s = o.hairBack || '';
@@ -132,7 +136,7 @@
     // шея и голова
     s += `<rect x="-13" y="${shY - 26}" width="26" height="34" fill="${c.skinD}"/>`;
     const hy = shY - 26 - c.ry + 10;
-    s += `<g transform="translate(0 ${hy}) rotate(${pose.tilt})">` + head({ rx: c.rx, ry: c.ry, skin: c.skin, skinD: c.skinD, face: pose.face, faceOver: Object.assign({}, c.faceOver, pose.faceOver), look: pose.look, hairBack: c.hairBack, hairFront: c.hairFront, glasses: c.glasses, crackedLips: c.crackedLips, cheeks: c.cheeks, sweat: pose.sweat, brow: c.browCol, lip: c.lip }) + (pose.headOver || '') + `</g>`;
+    s += `<g transform="translate(0 ${hy}) rotate(${pose.tilt})">` + head({ rx: c.rx, ry: c.ry, skin: c.skin, skinD: c.skinD, face: pose.face, faceOver: Object.assign({}, c.faceOver, pose.faceOver), look: pose.look, hairBack: c.hairBack, hairFront: pose.hairFront || c.hairFront, glasses: c.glasses, crackedLips: c.crackedLips, cheeks: c.cheeks, sweat: pose.sweat, brow: c.browCol, lip: c.lip, back: pose.back, hairCol: c.hairCol, backDeco: c.backDeco }) + (pose.headOver || '') + `</g>`;
     if (c.neckDeco) s += c.neckDeco;
     // руки
     for (const [sx, ar, hand] of [[-1, pose.armL, pose.handL], [1, pose.armR, pose.handR]]) {
@@ -146,7 +150,7 @@
 
   // ----- Вика -----
   const VIKA = {
-    scale: 1, sw: 56, hw: 48, rx: 54, ry: 63,
+    hairCol: '#1c1412', scale: 1, sw: 56, hw: 48, rx: 54, ry: 63,
     skin: '#e3b99d', skinD: '#b8897a', lip: '#8a4a45', browCol: '#1c1412',
     top: '#4b6370', topD: '#34464f', upper: '#4b6370', upperD: '#34464f', fore: '#e3b99d', foreD: '#b8897a',
     thigh: '#3e3a2d', thighD: '#2a281f', shin: '#3e3a2d', shinD: '#2a281f', shoe: '#1d140f', belt: '#241a13',
@@ -155,34 +159,49 @@
   VIKA.hairFront = `<path d="M-62 14 C-66 -78 62 -88 62 -6 L54 -14 Q30 -36 4 -40 Q-26 -26 -40 -6 Q-48 4 -52 26 Z" fill="#1c1412"/><path d="M-38 -10 q -10 30 -6 52" stroke="#1c1412" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M24 -44 q 18 4 28 22" stroke="#3a2a24" stroke-width="3" fill="none" opacity="0.7"/>`;
   // стетоскоп на шее (ветеринар)
   VIKA.neckDeco = `<path d="M-26 -425 Q-30 -360 -6 -345 M26 -425 Q30 -372 14 -352" stroke="#262321" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="4" cy="-342" r="11" fill="#9a9a94"/><circle cx="4" cy="-342" r="6" fill="#5c5c58"/>`;
+  VIKA.pocket = (level) => `<g transform="translate(48 -226) rotate(8)">${bottle(level == null ? 0.25 : level, 0.5)}</g><rect x="16" y="-246" width="48" height="30" rx="6" fill="#3e3a2d"/><rect x="16" y="-246" width="48" height="6" fill="#2a281f"/>`;
   VIKA.torsoDeco = `<path d="M-14 -428 L0 -404 L14 -428" fill="#2b3a41"/><rect x="-34" y="-392" width="22" height="20" rx="3" fill="#3f5560"/>`;
 
   // ----- Лида -----
   const LIDA = {
-    scale: 0.92, sw: 70, hw: 66, rx: 57, ry: 62,
+    hairCol: '#6f655d', scale: 0.92, sw: 70, hw: 66, rx: 57, ry: 62,
     skin: '#d39d7c', skinD: '#a67258', lip: '#7a3b33', browCol: '#4a403a', glasses: true,
     top: '#d3cbbb', topD: '#a19887', upper: '#d3cbbb', upperD: '#a19887', fore: '#d3cbbb', foreD: '#a19887', skirt: true,
     thigh: '#3a2f2c', thighD: '#2a2220', shin: '#3a2f2c', shinD: '#2a2220', shoe: '#2a1d17', legW: 32,
   };
   LIDA.hairBack = `<ellipse cx="0" cy="-10" rx="63" ry="66" fill="#6f655d"/><circle cx="0" cy="-82" r="28" fill="#6f655d"/><circle cx="8" cy="-84" r="18" fill="#5a5049"/>`;
+  LIDA.backDeco = `<circle cx="0" cy="-60" r="28" fill="#5a5049"/>`;
   LIDA.hairFront = `<path d="M-60 10 C-66 -70 66 -70 60 10 L52 -10 Q30 -42 2 -44 Q-28 -42 -52 -10 Z" fill="#6f655d"/><path d="M2 -44 L2 -30" stroke="#4f4640" stroke-width="3"/>`;
   // халат: лацканы, сумка с красным крестом через плечо
   LIDA.torsoDeco = `<path d="M-16 -428 L0 -380 L16 -428" fill="#6b2a2a"/><path d="M-16 -428 L-34 -380 L0 -350 Z M16 -428 L34 -380 L0 -350 Z" fill="#bfb6a5"/>` +
     `<path d="M-60 -420 L56 -272" stroke="#4a3426" stroke-width="10"/><rect x="34" y="-292" width="76" height="62" rx="8" fill="#5a3f2c"/><rect x="34" y="-292" width="76" height="16" rx="6" fill="#4a3426"/><path d="M72 -270 v28 M58 -256 h28" stroke="${P.red}" stroke-width="8"/>`;
 
+  LIDA.mask = `<path d="M-60 18 Q0 8 60 18 L58 52 Q0 44 -58 52 Z" fill="#e6e0d2"/><path d="M-58 40 Q0 32 58 40" stroke="#7a7266" stroke-width="3" fill="none"/><path d="M-30 -10 q 20 8 40 -4" stroke="#3a302c" stroke-width="10" opacity="0.5"/>`;
+
   // ----- Захар -----
   const ZAKHAR = {
-    scale: 1.1, sw: 64, hw: 46, rx: 50, ry: 68, cheeks: true, faceOver: { mouth: 'none' },
+    hairCol: '#8f897f', scale: 1.1, sw: 64, hw: 46, rx: 50, ry: 68, cheeks: true, faceOver: { mouth: 'none' },
     skin: '#a9704c', skinD: '#7a4b33', lip: '#5e2420', browCol: '#cfc6b6', browW: 6,
     top: '#8b8170', topD: '#625a4c', upper: '#a9704c', upperD: '#7a4b33', fore: '#a9704c', foreD: '#7a4b33',
     thigh: '#2e3236', thighD: '#1f2225', shin: '#2e3236', shinD: '#1f2225', shoe: '#1a1511', belt: '#3a2a1c', armW: 26,
   };
   // кепка с козырьком, седая борода
   ZAKHAR.hairBack = `<ellipse cx="0" cy="4" rx="54" ry="66" fill="#8f897f"/>`;
-  ZAKHAR.hairFront = `<path d="M-50 10 Q-52 76 0 92 Q52 76 50 10 L40 14 Q38 48 16 50 Q0 40 -16 50 Q-38 48 -40 14 Z" fill="#8f897f"/>` +
-    `<path d="M-24 38 Q0 28 24 38 Q12 44 0 40 Q-12 44 -24 38 Z" fill="#a8a196"/>` +
-    `<path d="M-15 40 Q0 36 15 40" stroke="#5e2420" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M-7 37 l2 5 M3 36 l-1 6" stroke="#e3c3a8" stroke-width="1.5"/>` +
-    `<path d="M-58 -26 Q-56 -86 0 -88 Q56 -86 58 -26 Z" fill="#2a2723"/><path d="M-58 -26 L-104 -18 Q-96 -32 -50 -36 Z" fill="#1d1b18"/><path d="M-20 -86 L-14 -30" stroke="#3a3632" stroke-width="3"/>`;
+  ZAKHAR.front = function (o) {
+    o = o || {};
+    const beard = `<path d="M-50 10 Q-52 76 0 92 Q52 76 50 10 L40 14 Q38 48 16 50 Q0 40 -16 50 Q-38 48 -40 14 Z" fill="#8f897f"/>`;
+    const must = `<path d="M-24 38 Q0 28 24 38 Q12 44 0 40 Q-12 44 -24 38 Z" fill="#a8a196"/>`;
+    const cap = `<path d="M-58 -26 Q-56 -86 0 -88 Q56 -86 58 -26 Z" fill="#2a2723"/><path d="M-58 -26 L-104 -18 Q-96 -32 -50 -36 Z" fill="#1d1b18"/><path d="M-20 -86 L-14 -30" stroke="#3a3632" stroke-width="3"/>`;
+    let mouth;
+    if (o.mouth === 'open') {
+      mouth = `<ellipse cx="0" cy="54" rx="17" ry="${f(12 + 10 * (o.open == null ? 1 : o.open))}" fill="${P.ink}"/><path d="M-17 50 Q0 40 17 50" stroke="#5e2420" stroke-width="5" fill="none"/><path d="M-6 44 l2 5 M4 43 l-1 6" stroke="#e3c3a8" stroke-width="1.5"/>`;
+    } else {
+      mouth = `<path d="M-15 40 Q0 36 15 40" stroke="#5e2420" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M-7 37 l2 5 M3 36 l-1 6" stroke="#e3c3a8" stroke-width="1.5"/>`;
+      if (o.lick != null) mouth += `<ellipse cx="${f(o.lick)}" cy="41" rx="7" ry="5" fill="#b8545a"/>`;
+    }
+    return beard + mouth + must + cap;
+  };
+  ZAKHAR.hairFront = ZAKHAR.front();
   ZAKHAR.torsoDeco = `<path d="M-44 -428 Q0 -380 44 -428" fill="#a9704c"/><path d="M-30 -428 Q0 -400 30 -428" fill="#7a4b33"/>`;
 
   // ---------- РЕКВИЗИТ ----------
@@ -242,7 +261,8 @@
     let w = '';
     wells.forEach(([x, y], i) => {
       w += `<circle cx="${x}" cy="${y}" r="14" fill="none" stroke="${P.paperInk}" stroke-width="4"/>`;
-      if (i < crosses) w += `<path d="M${x - 22} ${y - 22} L${x + 22} ${y + 22} M${x + 22} ${y - 22} L${x - 22} ${y + 22}" stroke="${P.red}" stroke-width="8" stroke-linecap="round"/>`;
+      const k = Array.isArray(crosses) ? crosses[i] || 0 : (i < crosses ? 1 : 0);
+      if (k > 0) w += `<g transform="translate(${x} ${y}) scale(${f(k)})"><path d="M-22 -22 L22 22 M22 -22 L-22 22" stroke="${P.red}" stroke-width="8" stroke-linecap="round"/></g>`;
     });
     let houses = '';
     const R = rng(7);

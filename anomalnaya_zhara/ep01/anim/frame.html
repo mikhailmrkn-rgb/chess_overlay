@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Кадр</title>
+<style>html,body{margin:0;padding:0;background:#000;overflow:hidden}svg{display:block}</style></head>
+<body><svg id="f" xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920"></svg>
+<script src="../art/world.js"></script>
+<script src="timings.js"></script>
+<script src="scenes.js"></script>
+<script>
+const el = document.getElementById('f');
+window.renderAt = (t) => { el.innerHTML = EP1.frameSVG(t); return true; };
+// контактный лист: несколько моментов в одной картинке
+window.contact = (times, cols, w) => {
+  const h = Math.round(w * 1920 / 1080), rows = Math.ceil(times.length / cols);
+  el.setAttribute('width', cols * w); el.setAttribute('height', rows * (h + 40));
+  el.setAttribute('viewBox', `0 0 ${cols * 1080} ${rows * (1920 + 160)}`);
+  el.innerHTML = times.map((t, i) => {
+    const x = (i % cols) * 1080, y = Math.floor(i / cols) * (1920 + 160);
+    return `<svg x="${x}" y="${y}" width="1080" height="1920" viewBox="0 0 1080 1920" overflow="hidden">${EP1.frameSVG(t)}</svg><text x="${x + 20}" y="${y + 2030}" font-family="Inter" font-size="110" font-weight="800" fill="#fff">${t.toFixed(2)}s</text>`;
+  }).join('');
+  return true;
+};
+</script></body></html>
