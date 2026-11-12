@@ -1,0 +1,6 @@
+Озвучка серии 1
+Сервис: ElevenLabs, модель eleven_v4, 1 дубль, 1084 кредита
+Голос: Kate — Multilingual Storyteller (voice_id R38XE2306Hb4iCupQ3X3)
+Текст: ../elevenlabs_tekst.txt
+Файл: voice_raw.mp3 — 59,25 с, моно 44,1 кГц, громкость -21,1 LUFS (исходник, без обработки)
+Речь: с 0,38 с по 58,83 с
